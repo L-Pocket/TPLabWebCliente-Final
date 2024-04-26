@@ -58,7 +58,7 @@ fetch(URL)
 function abrirAlerta(mensaje = '¡Haz agregado un producto al carrito!') {
     document.getElementById('alerta').style.display = 'block'
     document.getElementById('mensaje-alerta').innerText = mensaje
-    setTimeout(() => cerrarAlerta(), 500)
+    setTimeout(() => cerrarAlerta(), 1200)
 }
 
 function cerrarAlerta() {
@@ -114,29 +114,30 @@ function activarClickVerMas() {
 
 // ---------- CARRITO
 const carritoContainer = document.getElementById("container-carrito")
+const btnRealizarCompra = document.getElementById('realizar-compra')
+const btnVaciarCarrito = document.querySelector("#vaciar-carrito")
+const allCarritoContainer = document.querySelector("#container-all-carrito")
 
 function actualizarProdsEnCarrito() {
     const spanCarrito = document.querySelector('span#spanContadorCarrito')
     spanCarrito.textContent = diccionarioCarrito.size > 0 ? Array.from(diccionarioCarrito.values()).reduce((a,b) => a+b) : 0
     
-    document.querySelector('#carrito-total').innerHTML = "Total: $ "
-    document.querySelector('#carrito-total').innerHTML += diccionarioCarrito.size > 0 ? Array.from(diccionarioCarrito, ([idProducto, cantidad]) => ((diccionarioProductos.get(idProducto+'').price * cantidad) || 0).toFixed(2)).reduce((a,b) => parseFloat(a) + parseFloat(b)) : 0;
-
-    const btnCarrito = document.querySelector("#btn-carrito")
-
     if (diccionarioCarrito.size > 0) {
+        document.querySelector('#carrito-total').innerHTML = "Total: $ "
+        document.querySelector('#carrito-total').innerHTML += diccionarioCarrito.size > 0 ? Array.from(diccionarioCarrito, ([idProducto, cantidad]) => ((diccionarioProductos.get(idProducto+'').price * cantidad) || 0).toFixed(2)).reduce((a,b) => parseFloat(a) + parseFloat(b)) : 0;
+    
+        const btnCarrito = document.querySelector("#btn-carrito")
         btnCarrito.style.display = "block"
         btnCarrito.disabled = false
     } else {
         btnCarrito.disabled = true
-        // btnCarrito.style.display = "none"
-        //btnOcultarCarrito.style.display = "none"
+        document.querySelector('#carrito-total').innerHTML = "No hay productos en el carrito"
+        btnRealizarCompra.style.display = 'none'
+        btnVaciarCarrito.style.display = 'none'
+        setTimeout(() => {
+            allCarritoContainer.style.display = 'none'
+        }, 1500)
     }
-
-    // if (carritoContainer.style.display === 'block') {
-    //     const btnCarrito = document.querySelector("#btn-carrito")
-    //     // btnCarrito.style.display = "none"
-    // }
 
     carritoContainer.innerHTML = ""
     
@@ -151,8 +152,6 @@ function persistirCarrito() {
 
 const btnCarrito = document.querySelector("#btn-carrito")
 const btnOcultarCarrito = document.querySelector("#ocultar-carrito");
-const btnVaciarCarrito = document.querySelector("#vaciar-carrito")
-const allCarritoContainer = document.querySelector("#container-all-carrito")
 
 function mostrarCarrito() {    
     const carritoContainer = document.getElementById("container-carrito")
@@ -164,7 +163,7 @@ function mostrarCarrito() {
         carritoContainer.style.display = "block"
         allCarritoContainer.style.display = "block"
         btnOcultarCarrito.style.display = "block"
-        // btnCarrito.style.display = "none"
+        btnRealizarCompra.style.display = 'block'
         btnVaciarCarrito.style.display = 'block'
     } else {
         carritoContainer.innerHTML = "<p>No hay productos en el carrito.</p>"
@@ -230,7 +229,6 @@ function modificarCantidadItem(idProducto, extra = 1){
     }
 
     actualizarProdsEnCarrito()
-    console.log('jjj')
 }
 
 // ORDEN Y FILTRO BÚSQUEDA
@@ -288,8 +286,6 @@ function limpiarCarrito() {
     allCarritoContainer.style.display = 'none'
     abrirAlerta("¡El carrito fue vaciado con exito!")
 }
-
-const btnRealizarCompra = document.getElementById('realizar-compra')
 
 function realizarCompra() {
     diccionarioCarrito.clear()
