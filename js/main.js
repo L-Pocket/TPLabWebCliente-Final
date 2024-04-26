@@ -58,7 +58,7 @@ fetch(URL)
 function abrirAlerta(mensaje = '¡Haz agregado un producto al carrito!') {
     document.getElementById('alerta').style.display = 'block'
     document.getElementById('mensaje-alerta').innerText = mensaje
-    setTimeout(() => cerrarAlerta(), 1200)
+    setTimeout(() => cerrarAlerta(), 1500)
 }
 
 function cerrarAlerta() {
@@ -75,20 +75,22 @@ const productoModal = document.querySelector('#contenedor-modal')
 function abrirModal(producto) {
     const idBtn = `btn-dagregar-${producto.id}`
     modal.style.display = "block"
+
+    const descripcionProducto = producto.description.length > 150 ? producto.description.substring(0, 150) + '...' : producto.description
     //Estructura del Template literal
         productoModal.innerHTML = `<div class="div-modal">
                                         <div class="producto-nombre-modal"><p>${producto.title}</p></div>                        
-                                        <div class="producto-cat"><p> Stock: ${producto.rating.count}</p></div>
+                                        <div class="producto-stock"><p> Stock: ${producto.rating.count}</p></div>
                                         <div ><image class="producto-img-modal" src="${producto.image}" alt="Imagen de producto"></image></div>
                                         <div class="producto-cat"><p>${producto.category}</p></div>
-                                        <div class="producto-desc"><p>${producto.description}</p></div>
+                                        <div class="producto-desc"><p>${descripcionProducto}</p></div>
                                         <div class="producto-importe-modal"><p>$ ${producto.price}</p></div>
                                         <div class="btns-orden">
                                             <div><button id_producto=${producto.id} id=${idBtn} class="btn-agregar">AGREGAR 🛒</button></div>                                        
                                         </div>                
                                  </div>`
 
-    document.querySelector(`#${idBtn}`).addEventListener("click", () => agrergarProductoAlCarrito(producto.id))
+    document.querySelector(`#${idBtn}`).addEventListener("click", () => agrergarProductoAlCarrito(producto.id, productoModal))
 }
 
 function activarClickVerMas() {
@@ -123,9 +125,15 @@ function actualizarProdsEnCarrito() {
     spanCarrito.textContent = diccionarioCarrito.size > 0 ? Array.from(diccionarioCarrito.values()).reduce((a,b) => a+b) : 0
     
     if (diccionarioCarrito.size > 0) {
-        document.querySelector('#carrito-total').innerHTML = "Total: $ "
-        document.querySelector('#carrito-total').innerHTML += diccionarioCarrito.size > 0 ? Array.from(diccionarioCarrito, ([idProducto, cantidad]) => ((diccionarioProductos.get(idProducto+'').price * cantidad) || 0).toFixed(2)).reduce((a,b) => parseFloat(a) + parseFloat(b)) : 0;
+        const totalSinIVA = Array.from(diccionarioCarrito, ([idProducto, cantidad]) => {
+            const producto = diccionarioProductos.get(idProducto + '')
+            return (producto.price * cantidad) || 0;
+        }).reduce((a, b) => parseFloat(a) + parseFloat(b), 0)
     
+        const totalConIVA = (totalSinIVA * 1.21).toFixed(2)
+    
+        document.querySelector('#carrito-total').innerHTML = `Total + IVA: $ ${totalConIVA}`
+
         const btnCarrito = document.querySelector("#btn-carrito")
         btnCarrito.style.display = "block"
         btnCarrito.disabled = false
@@ -178,6 +186,7 @@ function mostrarCarrito() {
 function crearItemHTMLCarrito(producto) {
     return `<div class="carrito-item">
         <p>${producto.title}</p>  
+        <image class="producto-img-carrito" src="${producto.image}" alt="Imagen de producto"></image>
         <div>                                       
             <p class="carrito-item-precio">$ ${producto.price}</p>
             <div class="controles-cantidad">
@@ -207,16 +216,20 @@ function activarClickEnBotones() {
     botonesAgregar.forEach((boton) => boton.addEventListener("click", () => agrergarProductoAlCarrito(boton.attributes.id_producto.value)))
 }
 
-function agrergarProductoAlCarrito(idProducto){
-    //alert('Hiciste click en el botón. Id: '+ boton.id)
+
+function agrergarProductoAlCarrito(idProducto, modalElement){
     const productoSeleccionado = diccionarioProductos.get(idProducto+'')
-    //console.log(productoSeleccionado)
     const cantidad = diccionarioCarrito.get(idProducto+'') || 0
+
+    productoSeleccionado.rating.count -= 1
+
     diccionarioCarrito.set(idProducto+'', cantidad + 1)
 
     abrirAlerta(`¡Haz agregado correctamente tu ${productoSeleccionado.title} al carrito!`)
-    //console.table(carrito)
     actualizarProdsEnCarrito()
+
+    const productoModalStock = modalElement.querySelector('.producto-stock p')
+    productoModalStock.textContent = `Stock: ${productoSeleccionado.rating.count}`;
 }
 
 function modificarCantidadItem(idProducto, extra = 1){
