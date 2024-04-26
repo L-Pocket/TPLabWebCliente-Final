@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elegant House Shop</title>
+    <link rel="shortcut icon" href="images/logo.png" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <script defer src="js/main.js"></script>
+</head>
+<body>
+    <!-- HEADER -->
+    <header>
+        <div class="section-logo">
+            <img class="logo-img" src="/images/logo.png" alt="Logo" title="Logo imagen">            
+        </div>
+        <div class="header-logo-nombre">
+            <h1 class="logo-nombre">Elegant House Shop</h1>
+        </div>        
+        <div class="section-carrito">        
+            <div class="carrito">
+                <button id="btn-carrito" class="carrito-button" title="Ver carrito">
+                    <img class="carrito-image" src="images/shopping-cart.png" alt="shopping cart">                    
+                </button>                     
+            </div>             
+            <div class="carrito-contador">                
+                <p class="carrito-contador-texto">Carrito (<span id="spanContadorCarrito">0</span>)</p>                                                 
+                <div id="container-all-carrito">
+                    <span id="ocultar-carrito">X</span> 
+                    <div id="container-carrito"></div>
+                    <h2 id="carrito-total">Total: $0</h2>
+                    <div id="btns-carrito">
+                        <button id="realizar-compra" class="menu-button">Realizar Compra</button>   
+                        <button id="vaciar-carrito" class="menu-button">Vaciar carrito</button> 
+                    <div>  
+                </div>  
+            </div>
+        </div>        
+    </header>
+    <!-- NAV -->
+    <nav>
+        <div class="menu-buttons-container">
+            <button id="menu-inicio" class="menu-button" title="Volver al Inicio">Inicio</button>
+            <button id="menu-productos" class="menu-button"><a href="#container" title="Ver productos">Productos</a></button>
+        </div>        
+    </nav>
+    <!-- SECTION IMAGEN -->
+    <section class="section-home-image" title="Imagen Homepage"></section>
+    <!-- SEARCH -->
+    <section class="search">
+        <input type="text" id="filtro-input" class="search-input" title="Buscador" placeholder="Buscá nuestros productos por nombre..." maxlength="120" autocapitalize="off">
+    </section>     
+    <!-- MAIN -->
+    <main>        
+        <div id="div-ordenar-productos">
+            <button id="btn-ordenar-baratos" class="order-button">Ordenar por mas barato</button>
+            <button id="btn-ordenar-caros" class="order-button">Ordenar por mas caro</button>
+        </div>
+        <div class="main-container" id="container"></div> 
+    </main>
+    <!-- VENTANA MODAL -->
+    <div id="modal-vermas" class="modal">        
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="modal-close">&times;</span>
+                <h2>Detalles del producto</h2>
+              </div>
+            <div class="modal-body" id="contenedor-modal">
+                <!-- <p>Descripción del producto aquí...</p>
+                <p>Some other text...</p> -->
+            </div>                      
+        </div>    
+    </div>
+    <!-- ALERTA -->
+    <div id="alerta" class="alerta">
+        <span class="cerrar" onclick="cerrarAlerta()">&times;</span>
+        <h1 id="mensaje-alerta">Haz agregado un elemento al carrito</h1>
+    </div>
+    <!-- FOOTER -->
+    <footer>
+        <p class="footer-text">©Copyright 2024 - Laboratorio Aplicaciones Web Cliente</p>
+    </footer> 
+</body>
+</html>
+
