@@ -318,7 +318,7 @@ header {
     height: 350px;    
     margin-left: auto;
     margin-right: auto; 
-    background-image: url("/images/home-image-small.jpg");
+    background-image: url("images/home-image-small.jpg");
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;     
