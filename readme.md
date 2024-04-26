@@ -39,9 +39,6 @@ Se recomienda usar un framework como Vue.js o React.js para facilitar el desarro
 Se pueden utilizar otras APIs para obtener los productos, como la API de MercadoLibre.
 Esperamos que esta documentación le sea útil para el desarrollo de su proyecto.
 
-### Conclusión:
-Este proyecto de e-commerce es una buena oportunidad para poner en práctica diferentes tecnologías y habilidades de desarrollo web. La aplicación puede ser utilizada como base para crear una tienda online real o como un proyecto personal para aprender y mejorar las habilidades de programación.
-
 ### Autores del Proyecto
 Este proyecto ha sido desarrollado por: 
 * Bosco, Ezequiel
